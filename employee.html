@@ -15,7 +15,7 @@
         <img src="https://www.pngplay.com/wp-content/uploads/13/Software-Engineering-Transparent-File.png" alt="">
       </div>
         <div class="col">
-            <form action="">
+            <form id="form" action="">
                 <input type="text" id="eid" placeholder="Employee Id"><br>
                 <input type="text" id="ename" placeholder="Employee Name"><br>
                 <input type="text" id="eaddress" placeholder="Employee Address"><br>
@@ -47,35 +47,45 @@
              if(employeeDetails.id==''||employeeDetails.name==''||employeeDetails.address==''||employeeDetails.designation==''||employeeDetails.experience==''||employeeDetails.salary==''){
                 alert("please fill the form")
             }
+            if(localStorage.getItem(employeeDetails.id)){
+                alert("Employee already exists")
+            }
             else{
-            sessionStorage.setItem("Employee", JSON.stringify(employeeDetails));
-            eid.value = '';
-            ename.value = '';
-            eaddress.value = '';
-            edes.value = '';
-            exp.value = '';
-            esalary.value = '';
+                localStorage.setItem(employeeDetails.id,JSON.stringify(employeeDetails))
+                alert("Employee added successfully")
+                document.getElementById("form").reset()
             }
         }
         function search(){
+let key=emp.value
+    let employe=JSON.parse(localStorage.getItem(key))
 
-            
-            let eData=JSON.parse(sessionStorage.getItem("Employee"))
-            console.log(eData);
-            sId=sid.value
-            console.log(sId);     
-            if(eData.id==sId){
-               result.innerHTML=`<p>${eData.id}</p><p>${eData.name}</p><p>${eData.address}</p>
-                              <p>${eData.experience}</p><p>${eData.salary}</p>`
-            }
-            else{
-           alert("invalid")
-            }                 
-        }
-        function logout() {
-            sessionStorage.clear()
-            result.innerHTML=""
-        }
+  if (employe){
+   document.getElementById("result").innerHTML = `
+  <div class="card mx-auto mt-4" style="max-width: 22rem;">
+    <div class="card-header bg-primary text-white text-center">
+      <h5 class="mb-0">Employee Details</h5>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>ID:</strong> ${employe.Id}</li>
+      <li class="list-group-item"><strong>Name:</strong> ${employe.Name}</li>
+      <li class="list-group-item"><strong>Address:</strong> ${employe.Addr}</li>
+      <li class="list-group-item"><strong>Designation:</strong> ${employe.Desg}</li>
+      <li class="list-group-item"><strong>Experience:</strong> ${employe.Exp}</li>
+      <li class="list-group-item"><strong>Salary:</strong> ${employe.Sal}</li>
+    </ul>
+  </div>
+`
+  }
+  else{
+    document.getElementById("result").innerHTML = <p class="text-red-600"><strong>Employee not found</strong></p>
+  }
+       
+}
+       function logout(){
+    sessionStorage.clear()
+    localStorage.clear()
+}
     </script>
     <style>
         *{
